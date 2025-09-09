@@ -60,7 +60,7 @@ export default function AdminLogin() {
               Admin Login
             </h1>
             <div className="text-[15px] font-semibold text-white/40 text-center mb-1">
-              NovaChain Admin Panel
+              BitMart Admin Panel
             </div>
           </div>
           {error && (

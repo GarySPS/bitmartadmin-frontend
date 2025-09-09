@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { UserCircle2, BadgeCheck, XCircle, Loader2, Image as ImageIcon } from "lucide-react";
-import config, { ADMIN_API_BASE as ADMIN_API_BASE_NAMED } from "../config";
-const ADMIN_API_BASE = ADMIN_API_BASE_NAMED || config?.ADMIN_API_BASE;
+import { ADMIN_API_BASE } from "../config.js";
 
 
 export default function AdminKYC() {
