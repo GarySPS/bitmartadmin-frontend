@@ -1,7 +1,7 @@
 // src/components/BalanceAdjuster.jsx
 import React, { useState } from "react";
 import axios from "axios";
-import { API_BASE } from "../config";
+import { ADMIN_API_BASE as API_BASE } from "../config.js";
 import UserBalanceTable from "./UserBalanceTable"; // Import here
 
 export default function BalanceAdjuster({ userId }) {

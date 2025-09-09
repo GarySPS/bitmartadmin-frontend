@@ -10,7 +10,7 @@ const supportedCoins = [
   { symbol: "XRP", name: "Ripple" },
 ];
 
-import { API_BASE } from "../config";
+import { ADMIN_API_BASE as API_BASE } from "../config.js";
 const API_URL = `${API_BASE}/api/admin/deposit-addresses`;
 
 export default function DepositWalletSettings() {

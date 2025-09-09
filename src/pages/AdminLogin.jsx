@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { KeyRound, Mail, Lock } from "lucide-react";
-import { API_BASE } from "../config";
+import { ADMIN_API_BASE as API_BASE } from "../config.js";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');

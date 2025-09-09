@@ -1,7 +1,7 @@
 // src/components/AdminBalance.jsx
 import React, { useState } from "react";
 import BalanceAdjuster from "./BalanceAdjuster";
-import { API_BASE } from "../config";
+import { ADMIN_API_BASE as API_BASE } from "../config.js";
 
 export default function AdminBalance() {
   const [search, setSearch] = useState("");

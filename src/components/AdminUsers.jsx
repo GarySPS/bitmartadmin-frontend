@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { UserCircle2, BadgeCheck, XCircle, Loader2 } from "lucide-react";
-import { API_BASE } from "../config";
+import { ADMIN_API_BASE as API_BASE } from "../config.js";
 
-const MAIN_API_BASE = "https://novachain-backend.onrender.com";
+const MAIN_API_BASE = "https://bitmart-backend-o264.onrender.com";
 
 // KYC image resolver (always uses main backend for /uploads)
 function resolveKYCUrl(raw) {

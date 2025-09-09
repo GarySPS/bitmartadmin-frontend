@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Loader2, CheckCircle2, XCircle, BadgeCheck, ArrowUpRight } from "lucide-react";
-import { API_BASE } from "../config";
+import { ADMIN_API_BASE as API_BASE } from "../config.js";
 
 
 export default function AdminWithdrawals() {
