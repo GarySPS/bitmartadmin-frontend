@@ -32,7 +32,7 @@ export default function NavBar() {
             fontFamily: "Inter, Poppins, Arial, sans-serif"
           }}
         >
-          NovaChain
+          BitMart
         </span>
         <span className="ml-2 px-2 py-1 rounded-lg font-bold text-base md:text-lg tracking-widest bg-gradient-to-r from-[#16d79c]/90 to-[#1fbfff]/90 text-[#181b25] shadow">
           ADMIN
