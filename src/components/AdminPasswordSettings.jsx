@@ -1,7 +1,7 @@
 // src/components/AdminPasswordSettings.jsx
 import React, { useState } from "react";
 import axios from "axios";
-import { ADMIN_API_BASE } from "../config"; // <--- 1. ADD THIS LINE
+import { ADMIN_API_BASE } from "../config";
 
 export default function AdminPasswordSettings() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -27,9 +27,8 @@ export default function AdminPasswordSettings() {
     try {
       const token = localStorage.getItem("adminToken");
       const res = await axios.post(
-        // V V V 2. CHANGE THIS LINE V V V
         `${ADMIN_API_BASE}/api/admin/change-password`,
-        { newPassword }, // We send only the new password as per our final backend code
+        { currentPassword, newPassword }, // Now sends the current password
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessage(res.data.message || "Password updated successfully!");
@@ -47,12 +46,13 @@ export default function AdminPasswordSettings() {
       <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-1">
-            Current Password (not required, can be left empty)
+            Current Password
           </label>
           <input
             type="password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
+            required
             className="w-full px-4 py-2 bg-[#1e293b] border border-slate-600 rounded-md text-white focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
           />
         </div>
