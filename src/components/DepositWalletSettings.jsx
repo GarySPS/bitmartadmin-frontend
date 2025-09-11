@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Loader2, Wallet2, Image as LucideImage, UploadCloud, CheckCircle2 } from "lucide-react";
 
-const supportedCoins = [
-  { symbol: "USDT", name: "Tether USDT" },
-  { symbol: "BTC", name: "Bitcoin" },
-  { symbol: "ETH", name: "Ethereum" },
-  { symbol: "TON", name: "Toncoin" }, 
-  { symbol: "SOL", name: "Solana" },
-  { symbol: "XRP", name: "Ripple" },
+const walletFields = [
+  { symbol: "USDT", network: "TRC20", name: "USDT (TRC20)" },
+  { symbol: "USDT", network: "BEP20", name: "USDT (BEP20)" },
+  { symbol: "USDT", network: "ERC20", name: "USDT (ERC20)" },
+  { symbol: "BTC", network: "BTC", name: "Bitcoin" },
+  { symbol: "ETH", network: "ETH", name: "Ethereum" },
+  { symbol: "TON", network: "TON", name: "Toncoin" },
+  { symbol: "SOL", network: "SOL", name: "Solana" },
+  { symbol: "XRP", network: "XRP", name: "Ripple" },
 ];
 
 import { ADMIN_API_BASE as API_BASE } from "../config.js";
 const API_URL = `${API_BASE}/api/admin/deposit-addresses`;
 
 export default function DepositWalletSettings() {
-  const [wallets, setWallets] = useState(
-    supportedCoins.map(c => ({ ...c, address: "", qr_url: "" }))
-  );
+ const [wallets, setWallets] = useState(
+    walletFields.map(f => ({ ...f, address: "", qr_url: "" }))
+  );
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -28,27 +30,29 @@ export default function DepositWalletSettings() {
   }, []);
 
   const fetchWallets = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const token = localStorage.getItem("adminToken");
-      const res = await fetch(API_URL, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch deposit settings");
+    setLoading(true);
+    setError("");
+    try {
+      const token = localStorage.getItem("adminToken");
+      const res = await fetch(API_URL, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to fetch deposit settings");
 
-      setWallets(
-        supportedCoins.map(c => {
-          const found = data.find(w => w.coin === c.symbol);
-          return found ? { ...c, ...found, qr_preview: null, qr_file: null } : { ...c, address: "", qr_url: "" };
-        })
-      );
-    } catch (err) {
-      setError(err.message || "Network error");
-    }
-    setLoading(false);
-  };
+      setWallets(
+        walletFields.map(field => {
+          const found = data.find(w => w.coin === field.symbol && w.network === field.network);
+          return found 
+            ? { ...field, ...found, qr_preview: null, qr_file: null } 
+            : { ...field, address: "", qr_url: "" };
+        })
+      );
+    } catch (err) {
+      setError(err.message || "Network error");
+    }
+    setLoading(false);
+  };
 
   const handleAddressChange = (i, value) => {
     setWallets(ws =>
@@ -68,34 +72,36 @@ export default function DepositWalletSettings() {
     if (file) reader.readAsDataURL(file);
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    setSuccess("");
-    setError("");
-    try {
-      const token = localStorage.getItem("adminToken");
-      if (!token) throw new Error("Not logged in as admin");
+const handleSave = async () => {
+    setSaving(true);
+    setSuccess("");
+    setError("");
+    try {
+      const token = localStorage.getItem("adminToken");
+      if (!token) throw new Error("Not logged in as admin");
 
-      const formData = new FormData();
-      wallets.forEach(w => {
-        if (w.address) formData.append(`${w.symbol}_address`, w.address);
-        if (w.qr_file) formData.append(`${w.symbol}_qr`, w.qr_file);
-      });
+      const formData = new FormData();
+      wallets.forEach(w => {
+        // Create a unique key for each field, e.g., "USDT_TRC20_address"
+        const baseKey = `${w.symbol}_${w.network}`;
+        if (w.address) formData.append(`${baseKey}_address`, w.address);
+        if (w.qr_file) formData.append(`${baseKey}_qr`, w.qr_file);
+      });
 
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` }, // <--- Do NOT add Content-Type for FormData!
-        body: formData,
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to save");
-      setSuccess("Deposit settings saved!");
-      fetchWallets();
-    } catch (err) {
-      setError(err.message || "Failed to save settings");
-    }
-    setSaving(false);
-  };
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to save");
+      setSuccess("Deposit settings saved!");
+      fetchWallets();
+    } catch (err) {
+      setError(err.message || "Failed to save settings");
+    }
+    setSaving(false);
+  };
 
   return (
     <div className="max-w-3xl mx-auto mt-10 px-2 sm:px-6 py-8 bg-gradient-to-br from-white/5 via-[#191e29]/80 to-[#181b25]/90 rounded-2xl shadow-2xl border border-white/10">
@@ -113,11 +119,11 @@ export default function DepositWalletSettings() {
       ) : (
         <div className="flex flex-col gap-9">
           {wallets.map((w, i) => (
-            <div key={w.symbol} className="mb-2 bg-[#232836]/80 p-5 rounded-xl shadow border border-[#ffd70022] flex flex-col md:flex-row md:items-center gap-3 md:gap-8">
+            <div key={`${w.symbol}-${w.network}`} className="mb-2 bg-[#232836]/80 p-5 rounded-xl shadow border border-[#ffd70022] flex flex-col md:flex-row md:items-center gap-3 md:gap-8">
               <div className="min-w-[130px] flex items-center gap-2 font-bold text-white text-lg">
-                <LucideImage size={22} className="text-[#16d79c]" />
-                {w.name} <span className="ml-2 text-[#ffd700]">({w.symbol})</span>
-              </div>
+                <LucideImage size={22} className="text-[#16d79c]" />
+                {w.name}
+              </div>
               <input
                 type="text"
                 value={w.address || ""}
