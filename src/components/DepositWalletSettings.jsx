@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Loader2, Wallet2, Image as LucideImage, UploadCloud, CheckCircle2 } from "lucide-react";
 
 const walletFields = [
-  { symbol: "USDT", network: "TRC20", name: "USDT (TRC20)" },
-  { symbol: "USDT", network: "USDC ETH", name: "USDC (ETH)" },
-  { symbol: "USDT", network: "ERC20", name: "USDT (ERC20)" },
-  { symbol: "BTC", network: "BTC", name: "Bitcoin" },
-  { symbol: "ETH", network: "ETH", name: "Ethereum" },
-  { symbol: "TON", network: "TON", name: "Toncoin" },
-  { symbol: "SOL", network: "SOL", name: "Solana" },
-  { symbol: "XRP", network: "XRP", name: "Ripple" },
+  { symbol: "USDT", network: "TRC20", name: "USDT (TRC20)" },
+  { symbol: "USDT", network: "USDC-ETH", name: "USDC (ETH)" },
+  { symbol: "USDT", network: "ERC20", name: "USDT (ERC20)" },
+  { symbol: "BTC", network: "BTC", name: "Bitcoin" },
+  { symbol: "ETH", network: "ETH", name: "Ethereum" },
+  { symbol: "TON", network: "TON", name: "Toncoin" },
+  { symbol: "SOL", network: "SOL", name: "Solana" },
+  { symbol: "XRP", network: "XRP", name: "Ripple" },
 ];
 
 import { ADMIN_API_BASE as API_BASE } from "../config.js";
