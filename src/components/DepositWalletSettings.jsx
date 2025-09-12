@@ -3,7 +3,7 @@ import { Loader2, Wallet2, Image as LucideImage, UploadCloud, CheckCircle2 } fro
 
 const walletFields = [
   { symbol: "USDT", network: "TRC20", name: "USDT (TRC20)" },
-  { symbol: "USDT", network: "BEP20", name: "USDT (BEP20)" },
+  { symbol: "USDT", network: "USDC ETH", name: "USDC (ETH)" },
   { symbol: "USDT", network: "ERC20", name: "USDT (ERC20)" },
   { symbol: "BTC", network: "BTC", name: "Bitcoin" },
   { symbol: "ETH", network: "ETH", name: "Ethereum" },
