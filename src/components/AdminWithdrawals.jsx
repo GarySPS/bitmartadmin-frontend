@@ -1,3 +1,4 @@
+//src>components>AdminWithdrawals.jsx
 import React, { useEffect, useState } from "react";
 import { Loader2, CheckCircle2, XCircle, BadgeCheck, ArrowUpRight } from "lucide-react";
 import { ADMIN_API_BASE as API_BASE } from "../config.js";
@@ -73,21 +74,22 @@ export default function AdminWithdrawals() {
         <div className="overflow-x-auto rounded-xl">
           <table className="admin-table min-w-[800px]">
             <thead>
-              <tr>
-                <th>ID</th>
-                <th>User ID</th>
-                <th>Coin</th>
-                <th>Amount</th>
-                <th>To Address</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+              <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Coin</th>
+                <th>Network</th>
+                <th>Amount</th>
+                <th>To Address</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
             <tbody>
               {withdrawals.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="p-8 text-center text-gray-400 font-semibold">
+                  <td colSpan={9} className="p-8 text-center text-gray-400 font-semibold">
                     No withdrawals found.
                   </td>
                 </tr>
@@ -97,6 +99,7 @@ export default function AdminWithdrawals() {
                   <td>{w.id}</td>
                   <td>{w.user_id}</td>
                   <td className="font-bold text-base">{w.coin}</td>
+                  <td className="font-semibold">{w.network}</td>
                   <td>
                     <span className="font-bold text-[#FFD700]">
                       {parseFloat(w.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}

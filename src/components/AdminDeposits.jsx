@@ -1,3 +1,4 @@
+//src>components>AdminDeposits.jsx
 import React, { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Loader2, Image } from "lucide-react";
 import { ADMIN_API_BASE as API_BASE } from "../config.js";
@@ -69,17 +70,18 @@ export default function AdminDeposits() {
       ) : (
         <div className="overflow-x-auto rounded-xl">
           <table className="admin-table min-w-[700px]">
-            <thead>
-  <tr>
-    <th>ID</th>
-    <th>User</th>
-    <th>Coin</th>
-    <th>Amount</th>
-    <th>Status</th>
-    <th>Time</th>
-    <th>Slip</th>
-    <th>Action</th>
-  </tr>
+<thead>
+  <tr>
+    <th>ID</th>
+    <th>User</th>
+    <th>Coin</th>
+    <th>Network</th>
+    <th>Amount</th>
+    <th>Status</th>
+    <th>Time</th>
+    <th>Slip</th>
+    <th>Action</th>
+  </tr>
 </thead>
             <tbody>
               {deposits.map((d, idx) => (
@@ -87,6 +89,7 @@ export default function AdminDeposits() {
                   <td>{d.id}</td>
                   <td>{d.user_id}</td>
                   <td className="font-bold text-base">{d.coin || "USDT"}</td>
+                  <td className="font-semibold">{d.network}</td>
                   <td>
                     <span className="font-bold text-[#FFD700]">
                       {parseFloat(d.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
@@ -195,7 +198,7 @@ export default function AdminDeposits() {
               ))}
               {deposits.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="p-8 text-center text-gray-400 font-semibold">
+                  <td colSpan={9} className="p-8 text-center text-gray-400 font-semibold">
   No deposits found.
 </td>
                 </tr>
