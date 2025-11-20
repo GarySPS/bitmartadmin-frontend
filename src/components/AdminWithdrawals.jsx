@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Loader2, CheckCircle2, XCircle, BadgeCheck, ArrowUpRight } from "lucide-react";
 import { ADMIN_API_BASE as API_BASE } from "../config.js";
 
-
 export default function AdminWithdrawals() {
   const [withdrawals, setWithdrawals] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,6 +19,7 @@ export default function AdminWithdrawals() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
+      // Matches your admin backend: app.get('/api/withdrawals')
       const res = await fetch(`${API_BASE}/api/withdrawals`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -37,17 +37,23 @@ export default function AdminWithdrawals() {
     setError("");
     try {
       const token = localStorage.getItem("adminToken");
-      const url =
-        action === "approve"
-          ? `${API_BASE}/api/admin/withdrawals/${id}/approve`
-          : `${API_BASE}/api/admin/withdrawals/${id}/deny`;
+      
+      // === FIX: MATCHING YOUR ADMIN BACKEND SERVER.JS ===
+      // Your server uses: /api/admin/withdrawals/:id/approve
+      // Your server uses: /api/admin/withdrawals/:id/deny
+      const endpoint = action === "approve" ? "approve" : "deny";
+      const url = `${API_BASE}/api/admin/withdrawals/${id}/${endpoint}`;
+
       const res = await fetch(url, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
+        // No body is needed for your specific server implementation
       });
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || `Failed to ${action} withdrawal`);
-      fetchWithdrawals(); // refresh after action
+      
+      fetchWithdrawals(); // Refresh list after success
     } catch (err) {
       setError(err.message || "Network error");
     }
@@ -74,18 +80,18 @@ export default function AdminWithdrawals() {
         <div className="overflow-x-auto rounded-xl">
           <table className="admin-table min-w-[800px]">
             <thead>
-              <tr>
-                <th>ID</th>
-                <th>User ID</th>
-                <th>Coin</th>
-                <th>Network</th>
-                <th>Amount</th>
-                <th>To Address</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+              <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Coin</th>
+                <th>Network</th>
+                <th>Amount</th>
+                <th>To Address</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
             <tbody>
               {withdrawals.length === 0 && (
                 <tr>
@@ -99,7 +105,8 @@ export default function AdminWithdrawals() {
                   <td>{w.id}</td>
                   <td>{w.user_id}</td>
                   <td className="font-bold text-base">{w.coin}</td>
-                  <td className="font-semibold">{w.network}</td>
+                  {/* Shows the Network we added to database earlier */}
+                  <td className="font-semibold">{w.network || "—"}</td>
                   <td>
                     <span className="font-bold text-[#FFD700]">
                       {parseFloat(w.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
